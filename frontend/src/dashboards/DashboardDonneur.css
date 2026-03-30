@@ -1,0 +1,1370 @@
+:root{
+  --bg: #f6f8fb;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: rgba(148, 163, 184, 0.35);
+
+  --primary: #0ea5e9;
+  --primary-2: #0369a1;
+
+  --shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
+  --shadow-soft: 0 10px 20px rgba(15, 23, 42, 0.06);
+
+  --radius: 16px;
+  --font: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+*{ box-sizing: border-box; }
+
+body{
+  font-family: var(--font);
+  color: var(--text);
+}
+
+/* =========================
+   Layout
+========================= */
+.admin-page{
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 480px at 10% 0%, rgba(14,165,233,0.12), transparent 55%),
+    radial-gradient(900px 420px at 92% 12%, rgba(99,102,241,0.10), transparent 55%),
+    var(--bg);
+}
+
+.admin-shell{
+  display: flex;
+  min-height: 100vh;
+}
+
+/* =========================
+   Sidebar
+========================= */
+.admin-sidebar{
+  width: 285px;
+  padding: 18px;
+  border-right: 1px solid var(--border);
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.admin-brand{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: var(--radius);
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+}
+
+.admin-brand__logo{
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+}
+
+.admin-brand__title{
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.admin-brand__sub{
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.admin-nav{
+  display: grid;
+  gap: 10px;
+}
+
+.admin-nav__item{
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  padding: 12px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 800;
+  transition: 0.18s ease;
+}
+
+.admin-nav__item:hover{
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
+}
+
+.admin-nav__item.is-active{
+  border-color: rgba(14,165,233,0.50);
+  background: rgba(14,165,233,0.10);
+}
+
+.admin-nav--icons .admin-nav__item{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav-ic{
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  opacity: 0.95;
+}
+
+/* Sidebar footer */
+.admin-sidebar__footer{
+  margin-top: auto;
+  display: grid;
+  gap: 12px;
+}
+
+.admin-user{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: var(--radius);
+  background: #fff;
+  border: 1px solid var(--border);
+}
+
+.admin-user__avatar{
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  color: #fff;
+  background: linear-gradient(135deg, #111827, #334155);
+}
+
+.admin-user__name{
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.admin-user__role{
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* =========================
+   Main
+========================= */
+.admin-main{
+  flex: 1;
+  padding: 22px 22px 40px 22px;
+  overflow: auto;
+}
+
+.admin-loading{
+  margin: 30px auto;
+  max-width: 420px;
+  text-align: center;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Topbar */
+.admin-topbar{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.admin-title{
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 950;
+}
+
+.admin-subtitle{
+  margin: 6px 0 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+/* =========================
+   Card (container)
+========================= */
+.admin-card{
+  margin-top: 12px;
+  background: rgba(255,255,255,0.95);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.admin-card__header{
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(14,165,233,0.08), transparent);
+}
+
+.admin-card__title{
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 950;
+}
+
+.admin-card__desc{
+  margin: 6px 0 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.admin-card__tools{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ✅ REMOVE the duplicated search bar (red marked) for Faire un don screens
+   When donor-panel exists inside admin-card, hide admin-card tools.
+   This targets exactly your layout in the screenshot. */
+.admin-card:has(.donor-panel) .admin-card__tools{
+  display: none;
+}
+
+/* ✅ remove "double frame feel": reduce header bottom border when donor panel is shown */
+.admin-card:has(.donor-panel) .admin-card__header{
+  padding-bottom: 10px;
+  border-bottom: 0;
+}
+
+/* Input */
+.input{
+  width: 320px;
+  max-width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  outline: none;
+  background: #fff;
+  transition: 0.18s ease;
+  font-family: var(--font);
+}
+
+.input:focus{
+  border-color: rgba(14,165,233,0.60);
+  box-shadow: 0 0 0 4px rgba(14,165,233,0.12);
+}
+
+/* Buttons */
+.btn{
+  border: 0;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 900;
+  font-family: var(--font);
+  transition: 0.18s ease;
+  color: #0b1220;
+  background: rgba(148,163,184,0.18);
+}
+.btn:hover{ transform: translateY(-1px); }
+.btn--block{ width: 100%; }
+
+.btn--primary{
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  box-shadow: 0 12px 24px rgba(2, 80, 140, 0.16);
+}
+
+.btn--danger{
+  color: #fff;
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+}
+
+.btn--ghost{
+  background: #fff;
+  border: 1px solid var(--border);
+}
+
+.btn--withIcon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-ic{
+  width: 18px;
+  height: 18px;
+}
+
+.td-mono{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  color: #111827;
+  min-width: 160px;
+}
+
+/* =========================
+   Profil (don-profile-*)
+========================= */
+.don-profile-page{ display: grid; gap: 12px; }
+.don-profile-header{ margin-bottom: 6px; }
+.don-profile-title{ margin: 0; font-size: 1.5rem; font-weight: 950; }
+.don-profile-subtitle{ margin: 6px 0 0 0; color: var(--muted); font-size: 0.95rem; line-height: 1.35; }
+
+.don-profile-card{
+  background: rgba(255,255,255,0.95);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.don-profile-top{ display: flex; gap: 14px; align-items: flex-start; }
+.don-profile-logoBox{
+  width: 78px;
+  height: 78px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: 0 0 78px;
+}
+.don-profile-logoFallback{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-weight: 950;
+  font-size: 1.6rem;
+  color: #fff;
+  background: linear-gradient(135deg, #111827, #334155);
+}
+
+.don-profile-name{ margin: 0; font-size: 1.2rem; font-weight: 950; }
+.don-profile-desc{ margin: 6px 0 0 0; color: var(--muted); line-height: 1.4; }
+
+.don-profile-badges{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.don-badge{
+  background: rgba(14,165,233,0.10);
+  border: 1px solid rgba(14,165,233,0.18);
+  color: #0b1220;
+  font-weight: 900;
+  font-size: 0.84rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.don-profile-formGrid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.don-profile-inlineActions{ display: flex; gap: 10px; flex-wrap: wrap; }
+
+.don-profile-error{
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-weight: 850;
+  border: 1px solid rgba(239,68,68,.30);
+  background: rgba(239,68,68,.10);
+  color: #7f1d1d;
+}
+
+/* =========================
+   Mes dons
+========================= */
+.donations-page{ display: grid; gap: 14px; }
+
+.donations-header{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 2px;
+}
+
+.donations-title{ margin: 0; font-size: 1.6rem; font-weight: 950; }
+.donations-subtitle{ margin: 6px 0 0 0; color: var(--muted); font-size: 0.95rem; line-height: 1.35; }
+
+.donations-summary{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.donations-summaryCard{
+  background: rgba(255,255,255,0.95);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 16px;
+  text-align: center;
+}
+
+.donations-summaryValue{
+  font-size: 1.75rem;
+  font-weight: 950;
+  margin-bottom: 6px;
+}
+.donations-summaryValue--primary{ color: var(--primary-2); }
+.donations-summaryValue--green{ color: #16a34a; }
+.donations-summaryValue--blue{ color: #2563eb; }
+
+.donations-summaryLabel{
+  color: var(--muted);
+  font-weight: 850;
+  font-size: 0.92rem;
+}
+
+.donations-card{
+  background: rgba(255,255,255,0.95);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.donations-cardHead{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(14,165,233,0.08), transparent);
+}
+
+.donations-cardTitle{
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 950;
+}
+
+.donations-cardDesc{
+  margin: 6px 0 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.donations-tools{ display: flex; align-items: center; gap: 10px; }
+
+.donations-pill{
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  background: rgba(14,165,233,.10);
+  border: 1px solid rgba(14,165,233,.18);
+  color: #0b1220;
+  white-space: nowrap;
+}
+
+.donations-tableWrap{ overflow: auto; }
+.donations-table{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 980px;
+  font-size: 0.95rem;
+}
+
+.donations-table thead th{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 12px;
+  text-align: left;
+  font-size: 0.88rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.donations-table tbody td{
+  padding: 12px 12px;
+  border-bottom: 1px solid rgba(148,163,184,0.20);
+  vertical-align: middle;
+  color: #0f172a;
+}
+
+.donations-table tbody tr:nth-child(even){ background: rgba(148,163,184,0.08); }
+.donations-table tbody tr:hover{ background: rgba(14,165,233,0.08); }
+
+.donations-tdStrong{ font-weight: 950; }
+.donations-tdAmount{ font-weight: 950; color: var(--primary-2); }
+.donations-tdMono{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  color: #111827;
+  min-width: 180px;
+}
+.donations-tdMuted{ color: var(--muted); }
+
+.donations-status{
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 950;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(22,163,74,0.12);
+  border: 1px solid rgba(22,163,74,0.25);
+  color: #065f46;
+  white-space: nowrap;
+}
+
+.donations-empty{ padding: 34px 16px 38px; text-align: center; }
+.donations-emptyIcon{ font-size: 3rem; margin-bottom: 10px; }
+.donations-emptyTitle{ font-size: 1.4rem; font-weight: 950; margin-bottom: 8px; }
+.donations-emptyText{
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto 14px auto;
+  line-height: 1.4;
+}
+
+/* =========================
+   Faire un don (donor-panel + campaign-card + beneficiaries + inline panel)
+========================= */
+.donor-panel{
+  padding: 16px;
+  display: grid;
+  gap: 14px;
+  background: transparent;
+}
+
+.donor-panel__header{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(148,163,184,0.22);
+}
+
+.donor-panel__title{
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 950;
+}
+
+.donor-panel__subtitle{
+  margin: 6px 0 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.35;
+  max-width: 720px;
+}
+
+.donor-panel__tools{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.donor-search{ width: 340px; }
+
+.donor-count{
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 0.85rem;
+  background: rgba(14,165,233,.10);
+  border: 1px solid rgba(14,165,233,.18);
+  white-space: nowrap;
+}
+
+.donor-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 14px;
+}
+
+/* Association card (campaign-like) */
+.campaign-card{
+  text-align: left;
+  background: rgba(255,255,255,0.98);
+  border: 1px solid rgba(148,163,184,0.30);
+  border-radius: calc(var(--radius) + 2px);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: 0.18s ease;
+  width: 100%;
+  padding: 0;
+}
+.campaign-card:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: rgba(14,165,233,0.35);
+}
+
+.campaign-card__media{
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, rgba(14,165,233,0.18), rgba(99,102,241,0.10));
+  border-bottom: 1px solid rgba(148,163,184,0.22);
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.campaign-card__mediaImg{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: rgba(255,255,255,0.95);
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+.campaign-card__mediaFallback{
+  font-size: 3.2rem;
+  font-weight: 900;
+  color: #0b1220;
+  opacity: 0.95;
+  z-index: 1;
+}
+
+.campaign-card__body{
+  padding: 14px 14px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 190px;
+}
+
+.campaign-card__topRow{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.campaign-pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 950;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(14,165,233,0.10);
+  border: 1px solid rgba(14,165,233,0.18);
+  color: #0b1220;
+  white-space: nowrap;
+}
+
+.campaign-muted{
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 0.85rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.campaign-card__title{
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.campaign-card__desc{
+  margin: 0;
+  color: #0f172a;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.campaign-card__bottomRow{
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(148,163,184,0.20);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.campaign-stat{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #0b1220;
+  font-weight: 900;
+  font-size: 0.88rem;
+}
+.campaign-stat__ic{ width: 16px; height: 16px; opacity: 0.9; }
+.campaign-cta{ font-weight: 950; color: #0369a1; }
+
+/* Beneficiaries cards */
+.benef-card{
+  background: #fff;
+  border: 1px solid rgba(148,163,184,0.30);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: 12px;
+}
+
+.benef-card__head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.benef-card__name{
+  font-weight: 950;
+  font-size: 1.02rem;
+}
+
+.benef-kpis{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.benef-kpi{
+  background: rgba(148,163,184,0.10);
+  border: 1px solid rgba(148,163,184,0.20);
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.benef-kpi__label{
+  color: var(--muted);
+  font-weight: 900;
+  font-size: 0.82rem;
+}
+
+.benef-kpi__value{
+  margin-top: 4px;
+  font-weight: 950;
+  font-size: 1.05rem;
+}
+
+.benef-kpi__value--primary{
+  color: var(--primary-2);
+}
+
+.pct{
+  font-weight: 950;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.pct--green{ background: linear-gradient(135deg, #22c55e, #16a34a); }
+.pct--orange{ background: linear-gradient(135deg, #f59e0b, #d97706); }
+.pct--red{ background: linear-gradient(135deg, #ef4444, #b91c1c); }
+.pct--gray{ background: linear-gradient(135deg, #94a3b8, #64748b); }
+
+/* Empty */
+.donor-empty{
+  padding: 18px;
+  border: 1px dashed rgba(148,163,184,0.55);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.70);
+  text-align: center;
+}
+.donor-empty__icon{ font-size: 2.2rem; margin-bottom: 6px; }
+.donor-empty__title{ font-weight: 950; font-size: 1.05rem; }
+.donor-empty__text{ margin-top: 6px; color: var(--muted); }
+
+/* =========================
+   Inline donate panel (right)
+========================= */
+.don-split{
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 14px;
+  align-items: start;
+}
+
+.don-split__panel{
+  position: sticky;
+  top: 14px;
+}
+
+.don-panelEmpty{
+  border: 1px dashed rgba(148,163,184,0.55);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.70);
+  padding: 16px;
+  text-align: center;
+}
+
+.don-panelEmpty__title{ font-weight: 950; }
+.don-panelEmpty__text{ margin-top: 6px; color: var(--muted); font-weight: 800; font-size: 0.92rem; }
+
+.don-panelCard{
+  background: rgba(255,255,255,0.98);
+  border: 1px solid rgba(148,163,184,0.30);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.don-panelCard__head{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(148,163,184,0.22);
+}
+
+.don-panelCard__title{ font-weight: 950; font-size: 1.05rem; }
+.don-panelCard__subtitle{ color: var(--muted); font-weight: 850; margin-top: 4px; font-size: 0.9rem; }
+
+.don-panelClose{ padding: 8px 10px; border-radius: 12px; }
+
+.don-panelProgress{
+  background: rgba(14,165,233,0.06);
+  border: 1px solid rgba(14,165,233,0.15);
+  border-radius: 14px;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.don-panelProgress__top,
+.don-panelProgress__bottom{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #0b1220;
+  font-weight: 900;
+  font-size: 0.88rem;
+}
+
+.don-panelProgress__val{ color: var(--primary-2); }
+
+.don-panelProgress__bar{
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(148,163,184,0.28);
+  overflow: hidden;
+}
+
+.don-panelProgress__fill{
+  height: 100%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  width: 0%;
+}
+
+.don-panelAlert{
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-weight: 850;
+  border: 1px solid transparent;
+}
+.don-panelAlert--danger{
+  background: rgba(239,68,68,.10);
+  border-color: rgba(239,68,68,.30);
+  color: #7f1d1d;
+}
+.don-panelAlert--success{
+  background: rgba(22,163,74,.10);
+  border-color: rgba(22,163,74,.30);
+  color: #065f46;
+}
+
+.don-panelSection{ display: grid; gap: 8px; }
+.don-panelLabel{ font-weight: 900; color: #0b1220; font-size: 0.9rem; }
+
+.don-panelInput{
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  outline: none;
+  background: #fff;
+  transition: 0.18s ease;
+  font-family: var(--font);
+}
+.don-panelInput:focus{
+  border-color: rgba(14,165,233,0.60);
+  box-shadow: 0 0 0 4px rgba(14,165,233,0.12);
+}
+
+.don-panelHint{
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.don-panelQuick{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.don-quickBtn{
+  border: 1px solid rgba(148,163,184,0.35);
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 10px;
+  cursor: pointer;
+  font-weight: 900;
+  transition: 0.18s ease;
+}
+.don-quickBtn:hover{
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
+}
+.don-quickBtn.is-active{
+  border-color: rgba(14,165,233,0.60);
+  background: rgba(14,165,233,0.10);
+}
+
+.don-panelAnon{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(148,163,184,0.25);
+  background: #fff;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.don-panelFoot{
+  text-align: center;
+  color: var(--muted);
+  font-weight: 850;
+  font-size: 0.85rem;
+}
+
+/* =========================
+   Responsive
+========================= */
+@media (max-width: 1080px){
+  .don-split{ grid-template-columns: 1fr; }
+  .don-split__panel{ position: static; }
+  .don-panelQuick{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 980px){
+  .donations-summary{ grid-template-columns: 1fr; }
+  .donations-tools{ flex-direction: column; align-items: stretch; }
+}
+
+@media (max-width: 900px){
+  .donor-panel__header{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .donor-panel__tools{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .donor-search{ width: 100%; }
+}
+
+@media (max-width: 860px){
+  .admin-shell{ flex-direction: column; }
+  .admin-sidebar{
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .admin-main{ padding: 16px; }
+  .nav-ic, .btn-ic{ width: 20px; height: 20px; }
+}
+
+@media (max-width: 520px){
+  .don-profile-formGrid{ grid-template-columns: 1fr; }
+}
+/* =========================
+   Mon card (version moderne)
+   Utilise les variables déjà définies : --primary, --primary-2, --border, --shadow, --shadow-soft, --radius
+========================= */
+.don-card-wrap{
+  padding: 16px;
+  display: grid;
+  place-items: center;
+}
+
+.don-card{
+  width: 100%;
+  max-width: 380px;
+  border-radius: 22px;
+  padding: 18px;
+  border: 1px solid rgba(148,163,184,0.30);
+  background:
+    radial-gradient(620px 220px at 20% 0%, rgba(14,165,233,0.18), transparent 55%),
+    radial-gradient(520px 220px at 95% 15%, rgba(99,102,241,0.14), transparent 60%),
+    rgba(255,255,255,0.96);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.don-card::before{
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, rgba(14,165,233,0.32), rgba(99,102,241,0.22), rgba(14,165,233,0.14));
+  filter: blur(14px);
+  opacity: 0.65;
+  z-index: 0;
+}
+
+.don-card > *{
+  position: relative;
+  z-index: 1;
+}
+
+/* Header / brand */
+.don-card__logo{
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  font-size: 1.35rem;
+  font-weight: 950;
+  letter-spacing: 0.8px;
+  color: #0b1220;
+  margin-bottom: 10px;
+}
+.don-card__logo span{
+  color: var(--primary-2);
+}
+
+/* Avatar */
+.don-card__photo{
+  width: 96px;
+  height: 96px;
+  margin: 10px auto 12px;
+  border-radius: 18px;
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(14,165,233,0.75), rgba(3,105,161,0.75));
+  box-shadow: var(--shadow-soft);
+}
+
+.don-card__photoInner{
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #0b1220, #334155);
+  color: #fff;
+  font-weight: 950;
+  font-size: 1.55rem;
+}
+
+/* Name */
+.don-card__name{
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 950;
+  color: #0b1220;
+  margin: 4px 0 14px;
+}
+
+/* Fields */
+.don-card__grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.don-card__field{
+  border: 1px solid rgba(148,163,184,0.22);
+  background: rgba(255,255,255,0.85);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 10px 18px rgba(15,23,42,0.06);
+}
+
+.don-card__label{
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.don-card__value{
+  font-size: 0.92rem;
+  font-weight: 850;
+  color: #0b1220;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.don-card__value.td-mono,
+.td-mono{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Footer */
+.don-card__footer{
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(148,163,184,0.24);
+  text-align: center;
+  color: var(--muted);
+  font-weight: 900;
+  font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 520px){
+  .don-card{
+    max-width: 340px;
+    padding: 16px;
+  }
+  .don-card__photo{
+    width: 88px;
+    height: 88px;
+  }
+}
+/* ================= MESSAGES / COMMENTAIRES ================= */
+.messages-page {
+  padding: 1rem;
+}
+
+.messages-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.messages-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.messages-subtitle {
+  color: #666;
+  margin: 0.25rem 0 0 0;
+}
+
+.messages-count {
+  background: #667eea;
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.message-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid #eee;
+  transition: box-shadow 0.2s;
+}
+
+.message-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.message-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.message-card__benef {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.message-card__benefName {
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.message-card__date {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.message-card__amount {
+  font-weight: 600;
+  color: #0ea5e9;
+  font-size: 1.1rem;
+}
+
+.message-card__body {
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+.message-text {
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+  color: #333;
+  white-space: pre-wrap;
+}
+
+.message-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.message-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.message-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.message-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.message-edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.messages-empty {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.messages-empty__icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.messages-empty__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #1a1a2e;
+}
+
+.messages-empty__text {
+  color: #666;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* Boutons avec icônes */
+.btn--withIcon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-ic {
+  width: 16px;
+  height: 16px;
+}
+
+.btn--sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.btn--danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn--danger:hover {
+  background: #dc2626;
+}
+
+.btn--success {
+  background: #22c55e;
+  color: white;
+}
+
+.btn--success:hover {
+  background: #16a34a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .messages-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .message-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .message-actions {
+    justify-content: flex-start;
+  }
+}

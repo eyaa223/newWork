@@ -1,0 +1,235 @@
+:root{
+  --bg: #f6f8fb;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: rgba(148, 163, 184, 0.35);
+
+  --primary: #0ea5e9;
+  --primary-2: #0369a1;
+
+  --shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
+  --shadow-soft: 0 10px 20px rgba(15, 23, 42, 0.06);
+
+  --radius: 20px;
+  --radius-sm: 16px;
+
+  --font: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+*{ box-sizing: border-box; }
+
+.db-page{
+  min-height: 100vh;
+  padding: 26px 18px 70px;
+  font-family: var(--font);
+  color: var(--text);
+
+  background:
+    radial-gradient(1100px 480px at 10% 0%, rgba(14,165,233,0.14), transparent 55%),
+    radial-gradient(900px 420px at 92% 12%, rgba(99,102,241,0.10), transparent 55%),
+    var(--bg);
+}
+
+.db-shell{
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  gap: 14px;
+}
+
+/* Hero media */
+.db-hero{
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(14,165,233,0.14);
+  box-shadow: 0 20px 65px rgba(3, 105, 161, 0.14);
+}
+
+.db-hero-media{
+  position: relative;
+  height: 240px;
+  background: #0b1220;
+}
+
+.db-hero-img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  filter: brightness(0.80);
+}
+
+.db-hero-overlay{
+  position: absolute;
+  inset: 0;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(3,105,161,0.70) 0%, rgba(15,23,42,0.30) 70%);
+}
+
+.db-hero-badge{
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.22);
+  font-weight: 950;
+}
+
+.db-title{
+  margin: 0;
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  font-weight: 950;
+  letter-spacing: 0.2px;
+  line-height: 1.15;
+}
+
+.db-subtitle{
+  margin: 0;
+  opacity: 0.92;
+  font-weight: 650;
+  max-width: 780px;
+}
+
+/* Card */
+.db-card{
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(14,165,233,0.14);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.db-form{
+  padding: 18px;
+  display: grid;
+  gap: 16px;
+}
+
+.db-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.db-wide{
+  grid-column: 1 / -1;
+}
+
+.db-field{
+  display: grid;
+  gap: 6px;
+}
+
+.db-field label{
+  font-weight: 950;
+  color: #0b1220;
+  font-size: 0.92rem;
+}
+
+.db-field input,
+.db-field select,
+.db-field textarea{
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  outline: none;
+  background: #fff;
+  transition: 0.18s ease;
+  font-family: var(--font);
+}
+
+.db-field textarea{
+  resize: vertical;
+}
+
+.db-field input:focus,
+.db-field select:focus,
+.db-field textarea:focus{
+  border-color: rgba(14,165,233,0.70);
+  box-shadow: 0 0 0 4px rgba(14,165,233,0.12);
+}
+
+.db-label-row{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.db-counter{
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 850;
+}
+
+.db-help{
+  color: var(--muted);
+  font-weight: 650;
+  font-size: 0.86rem;
+}
+
+/* Submit */
+.db-submit{
+  width: 100%;
+  border: 0;
+  cursor: pointer;
+  padding: 14px 14px;
+  border-radius: 16px;
+  font-weight: 950;
+  font-size: 1rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  box-shadow: 0 18px 44px rgba(3,105,161,0.20);
+  transition: 0.18s ease;
+}
+
+.db-submit:hover{
+  transform: translateY(-1px);
+}
+
+.db-submit:disabled{
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.db-loading{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.db-spinner{
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.55);
+  border-top-color: #fff;
+  animation: dbspin 0.9s linear infinite;
+}
+
+@keyframes dbspin{
+  to{ transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .db-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .db-hero-media{
+    height: 220px;
+  }
+}
+.required {
+  color: red;
+  margin-left: 2px;
+}

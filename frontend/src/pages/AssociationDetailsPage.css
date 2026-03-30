@@ -1,0 +1,260 @@
+/* =========================
+   Association Details - FINAL
+   Requirements:
+   - Hero medium width centered
+   - QR LEFT, Informations RIGHT (same row)
+   - NO scrollbars inside Informations
+   - NO empty big space inside QR card
+========================= */
+
+/* Page */
+.assoc-details-page{
+  min-height:100vh;
+  padding:28px 18px 60px;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(129, 212, 250, 0.45), transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(2, 136, 209, 0.22), transparent 45%),
+    linear-gradient(135deg, #e0f7ff 0%, #f5f5f5 100%);
+}
+
+/* Cancel global center alignment coming from .App */
+.assoc-details-page,
+.assoc-details-page *{
+  text-align:left;
+  box-sizing:border-box;
+}
+
+/* ✅ Shell: medium width; 2 columns under hero */
+.assoc-shell{
+  max-width:920px;
+  width:100%;
+  margin:0 auto;
+
+  display:grid;
+  gap:14px;
+
+  grid-template-columns: 1fr 1fr; /* same width columns */
+  grid-template-areas:
+    "hero hero"
+    "share info"; /* ✅ QR left, info right */
+
+  align-items:start;
+}
+
+/* Loading / errors */
+.assoc-state{
+  max-width:920px;
+  margin:10px auto;
+  font-weight:800;
+  color:#334155;
+}
+
+.assoc-error-box{
+  max-width:720px;
+  margin:40px auto 0;
+  background:rgba(255,255,255,0.96);
+  border:1px solid rgba(239,68,68,0.25);
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 12px 30px rgba(2,80,140,0.10);
+}
+
+.assoc-error-box h2{
+  margin:0 0 8px 0;
+  color:#b91c1c;
+  font-weight:950;
+}
+.assoc-error-box p{
+  margin:0;
+  color:#334155;
+  line-height:1.6;
+  font-weight:650;
+}
+
+/* Hero */
+.assoc-hero{
+  grid-area:hero;
+
+  border-radius:20px;
+  padding:18px;
+  color:#fff;
+  background:linear-gradient(135deg,#2257dc 0%,#2b8dd8 70%);
+  box-shadow:0 20px 65px rgba(1,87,155,0.24);
+  position:relative;
+  overflow:hidden;
+
+  width:100%;
+}
+
+.assoc-hero::after{
+  content:'';
+  position:absolute;
+  inset:-40%;
+  background:radial-gradient(circle, rgba(255,255,255,0.199), transparent 55%);
+  transform:rotate(12deg);
+}
+
+.assoc-hero-badge{
+  position:relative;
+  z-index:1;
+  width:fit-content;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(0, 102, 125, 0.16);
+  border:1px solid rgba(255,255,255,0.22);
+  font-weight:900;
+  font-size:0.9rem;
+}
+
+.assoc-hero-main{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-top:12px;
+  min-width:0;
+}
+
+.assoc-avatar{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:#f3f4f6;
+}
+
+.assoc-avatar-img{
+  width:70%;
+  height:70%;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+}
+
+.assoc-hero-text{min-width:0;}
+
+.assoc-avatar-img:not([style*="display: none"]) + .assoc-avatar-fallback{
+  display:none;
+}
+
+.assoc-title{
+  margin:0;
+  font-size:clamp(1.5rem, 2.4vw, 2.2rem);
+  font-weight:950;
+  line-height:1.15;
+}
+
+.assoc-subtitle{
+  margin:6px 0 0 0;
+  opacity:0.92;
+  font-weight:650;
+  line-height:1.5;
+}
+
+/* Cards */
+.assoc-card{
+  border-radius:20px;
+  padding:18px;
+  background:rgba(255,255,255,0.96);
+  border:1px solid rgba(2,136,209,0.12);
+  box-shadow:0 12px 30px rgba(2,80,140,0.10);
+
+  width:100%;
+  overflow: visible; /* ✅ no internal scrollbars */
+}
+
+/* ✅ Place the 2 sections WITHOUT JSX changes
+   1st assoc-card in DOM = Informations
+   2nd assoc-card in DOM = Partager (QR)
+   We swap by assigning grid areas.
+*/
+.assoc-shell > .assoc-card:nth-of-type(1){ grid-area: info; }
+.assoc-shell > .assoc-card:nth-of-type(2){ grid-area: share; }
+
+.assoc-section-title{
+  margin:0 0 12px 0;
+  font-size:1.2rem;
+  font-weight:950;
+  color:#0f172a;
+}
+
+/* Informations list */
+.assoc-grid{
+  display:grid;
+  gap:12px;
+  grid-template-columns: 1fr;
+}
+
+.assoc-item{
+  min-width:0;
+  border-radius:16px;
+  padding:14px;
+  background:linear-gradient(135deg, rgba(225,245,254,0.70), rgba(255,255,255,0.98));
+  border:1px solid rgba(148,163,184,0.28);
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  width:100%;
+}
+
+.assoc-item-wide{ width:100%; }
+
+.assoc-item-icon{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:rgba(2,136,209,0.10);
+  flex:0 0 44px;
+}
+
+.assoc-item-body{
+  flex:1 1 auto;
+  min-width:0;
+}
+
+.assoc-label{
+  display:block;
+  color:#64748b;
+  font-weight:900;
+  font-size:0.85rem;
+  margin-bottom:6px;
+  line-height:1.2;
+}
+
+.assoc-value{
+  display:block;
+  color:#0f172a;
+  font-weight:850;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+/* ✅ QR card layout: compact, no empty space */
+.assoc-shell > .assoc-card:nth-of-type(2) > div[style*="display: flex"]{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.assoc-shell > .assoc-card:nth-of-type(2) svg{
+  width:120px;
+  height:120px;
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .assoc-shell{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "hero"
+      "share"
+      "info";
+  }
+}
