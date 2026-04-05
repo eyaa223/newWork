@@ -1,14 +1,33 @@
 import express from "express";
-import db from "../config/db.js"; // adapte selon ton projet
+import db from "../config/db.js";
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT id, value, label, icon FROM categories ORDER BY label ASC");
+    // ✅ Vérifiez le NOM EXACT de la colonne dans votre table
+    // Si la colonne s'appelle 'icon', 'image', 'image_url' ou 'img'
+    const [rows] = await db.query(
+      `SELECT 
+        id, 
+        value, 
+        label, 
+        COALESCE(img, icon, image_url, image) AS img  -- ✅ Essaie plusieurs noms de colonnes
+       FROM categories 
+       WHERE active = 1 
+       ORDER BY ordre ASC, label ASC`
+    );
+    
+    // ✅ Debug : affiche ce qu'on renvoie
+    console.log('[GET /categories] Catégories renvoyées:', rows);
+    
     res.json(rows);
   } catch (e) {
-    res.status(500).json({ message: "Erreur serveur" });
+    console.error('[GET /categories] erreur:', e);
+    res.status(500).json({ 
+      message: "Erreur serveur",
+      error: e.message 
+    });
   }
 });
 

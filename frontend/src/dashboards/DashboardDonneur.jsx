@@ -205,7 +205,31 @@ const DashboardDonneur = () => {
       setProfileSaving(false);
     }
   };
-
+// ✅ Fonction pour mettre à jour UNIQUEMENT le numéro bancaire
+const saveBankNumber = async () => {
+  if (!user?.token) return;
+  if (!profile.numero_bancaire?.trim()) {
+    setProfileError('Numéro bancaire requis');
+    return;
+  }
+  
+  setProfileSaving(true);
+  setProfileError('');
+  try {
+    await axios.put(
+      `${API}/api/me/bank`,
+      { numero_bancaire: profile.numero_bancaire.trim() },
+      { headers: authHeader }
+    );
+    alert('✅ Numéro bancaire mis à jour !');
+    fetchMyProfile();
+  } catch (err) {
+    console.error('[DashboardDonneur] saveBankNumber error', err);
+    setProfileError(err.response?.data?.message || 'Erreur mise à jour carte');
+  } finally {
+    setProfileSaving(false);
+  }
+};
   // =========================
   // ✅ Messages: Update & Delete
   // =========================
@@ -266,11 +290,16 @@ const DashboardDonneur = () => {
     if (activeTab === 'messages') fetchMesMessages();
   }, [activeTab, fetchMyProfile, fetchMesMessages]);
 
-  useEffect(() => {
-    if (user?.numero_bancaire && !donNumeroBancaire) {
-      setDonNumeroBancaire(String(user.numero_bancaire));
-    }
-  }, [user?.numero_bancaire, donNumeroBancaire]);
+ // ✅ Auto-remplir le numéro bancaire dans le formulaire de don
+useEffect(() => {
+  // Priorité : profile.numero_bancaire (chargé depuis /api/me) 
+  // Fallback : user.numero_bancaire (si présent dans le contexte auth)
+  const bankNumber = profile?.numero_bancaire || user?.numero_bancaire;
+  
+  if (bankNumber && !donNumeroBancaire && donPanelOpen) {
+    setDonNumeroBancaire(String(bankNumber).trim());
+  }
+}, [profile?.numero_bancaire, user?.numero_bancaire, donNumeroBancaire, donPanelOpen]);
 
   useEffect(() => {
     if (activeTab !== 'beneficiaires') {
@@ -565,9 +594,7 @@ const DashboardDonneur = () => {
                       </div>
                     </div>
                     <div className="don-profile-actions">
-                      <button className="btn btn--ghost" type="button" onClick={() => alert('Vous pouvez éditer en bas dans les formulaires.')}>
-                        Éditer le profil
-                      </button>
+                     
                     </div>
                   </>
                 )}
@@ -591,11 +618,15 @@ const DashboardDonneur = () => {
                       <label>Numéro bancaire</label>
                       <input className="input input--full td-mono" value={profile.numero_bancaire} onChange={(e) => setProfile((p) => ({ ...p, numero_bancaire: e.target.value }))} placeholder="XXXX XXXX XXXX XXXX" />
                     </div>
+                    
                     {profileError && <div className="field field--full"><div className="don-profile-error">{profileError}</div></div>}
                     <div className="field field--full">
                       <div className="don-profile-inlineActions">
                         <button className="btn btn--primary" type="button" disabled={profileSaving} onClick={saveProfile}>
                           {profileSaving ? 'Sauvegarde...' : 'Enregistrer'}
+                        </button>
+                        <button className="btn btn--success" type="button" disabled={profileSaving || !profile.numero_bancaire?.trim()} onClick={saveBankNumber}>
+                          {profileSaving ? 'Sauvegarde...' : 'Mettre à jour carte'}
                         </button>
                       </div>
                     </div>
@@ -1047,5 +1078,4 @@ const DashboardDonneur = () => {
     </div>
   );
 };
-
 export default DashboardDonneur;

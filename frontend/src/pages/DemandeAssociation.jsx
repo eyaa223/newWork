@@ -4,28 +4,41 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import './DemandeAssociation.css';
 
-/* ✅ Images catégories */
-import educationImg from '../assets/education.png';
-import santeImg from '../assets/sante.png';
-import alimentationImg from '../assets/alimentation.png';
-import logementImg from '../assets/logement.jpg';
-import urgenceImg from '../assets/urgence.png';
-import formationImg from '../assets/formation.jpg';
-import autreImg from '../assets/autre.png';
+const API = 'http://localhost:5000';
 
-const CATEGORIES = [
-  { value: 'education', label: 'Éducation', img: educationImg },
-  { value: 'health', label: 'Santé', img: santeImg },
-  { value: 'food', label: 'Alimentation', img: alimentationImg },
-  { value: 'housing', label: 'Logement', img: logementImg },
-  { value: 'emergency', label: 'Urgence', img: urgenceImg },
-  { value: 'skills', label: 'Formation', img: formationImg },
-  { value: 'other', label: 'Autre', img: autreImg },
-];
+// ✅ Hook personnalisé pour charger les catégories depuis la BDD
+const useCategories = () => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get(`${API}/categories`)
+      .then(res => setCategories(Array.isArray(res.data) ? res.data : []))
+      .catch(err => {
+        console.error('Erreur fetch catégories:', err);
+        // Fallback statique si API échoue
+        setCategories([
+          { value: 'education', label: 'Éducation', img: '' },
+          { value: 'health', label: 'Santé', img: '' },
+          { value: 'food', label: 'Alimentation', img: '' },
+          { value: 'housing', label: 'Logement', img: '' },
+          { value: 'emergency', label: 'Urgence', img: '' },
+          { value: 'skills', label: 'Formation', img: '' },
+          { value: 'other', label: 'Autre', img: '' },
+        ]);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  return { categories, loading };
+};
 
 const DemandeAssociation = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  
+  // ✅ Charger les catégories depuis la BDD
+  const { categories: dbCategories, loading: categoriesLoading } = useCategories();
 
   const [form, setForm] = useState({
     nom_association: '',
@@ -43,8 +56,8 @@ const DemandeAssociation = () => {
   });
 
   const selectedCategory = useMemo(
-    () => CATEGORIES.find((c) => c.value === form.categorie) || null,
-    [form.categorie],
+    () => dbCategories.find((c) => c.value === form.categorie) || null,
+    [form.categorie, dbCategories],
   );
 
   const logoPreviewUrl = useMemo(() => {
@@ -79,12 +92,11 @@ const DemandeAssociation = () => {
   const missingDocsCount = requiredDocs.filter((d) => !form[d.key]).length;
 
   const validate = () => {
-    // Minimal front validation (better UX)
-    if (!form.nom_association.trim()) return "Veuillez saisir le nom de l’association.";
-    if (!form.email.trim()) return "Veuillez saisir l’email.";
+    if (!form.nom_association.trim()) return "Veuillez saisir le nom de l'association.";
+    if (!form.email.trim()) return "Veuillez saisir l'email.";
     if (!form.telephone.trim()) return "Veuillez saisir le téléphone.";
     if (!form.responsable.trim()) return "Veuillez saisir le responsable.";
-    if (!form.adresse.trim()) return "Veuillez saisir l’adresse.";
+    if (!form.adresse.trim()) return "Veuillez saisir l'adresse.";
     if (!form.categorie) return "Veuillez sélectionner une catégorie.";
     if (!form.description.trim() || form.description.trim().length < 20)
       return "La description doit contenir au moins 20 caractères.";
@@ -123,7 +135,7 @@ const DemandeAssociation = () => {
       fd.append('doc_registre', form.doc_registre);
       fd.append('doc_cin', form.doc_cin);
 
-      await axios.post('http://localhost:5000/demandes', fd, {
+      await axios.post(`${API}/demandes`, fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
@@ -153,7 +165,7 @@ const DemandeAssociation = () => {
       <div className="da-shell">
         <header className="da-hero">
           <div className="da-hero-badge">Inscription Association</div>
-          <h1 className="da-title">Demande d’inscription</h1>
+          <h1 className="da-title">Demande d'inscription</h1>
           <p className="da-subtitle">
             Remplissez les informations, choisissez une catégorie, ajoutez une description et envoyez les documents requis.
           </p>
@@ -177,161 +189,182 @@ const DemandeAssociation = () => {
         <div className="da-card">
           <form onSubmit={handleSubmit} className="da-form">
             <div className="da-grid">
-  {/* Nom association */}
-  <div className="da-field">
-    <label>
-      Nom de l’association <span className="required">*</span>
-    </label>
-    <input
-      required
-      name="nom_association"
-      value={form.nom_association}
-      onChange={handleChange}
-      placeholder="Nom de l'association"
-    />
-  </div>
+              {/* Nom association */}
+              <div className="da-field">
+                <label>
+                  Nom de l'association <span className="required">*</span>
+                </label>
+                <input
+                  required
+                  name="nom_association"
+                  value={form.nom_association}
+                  onChange={handleChange}
+                  placeholder="Nom de l'association"
+                />
+              </div>
 
-  {/* Email */}
-  <div className="da-field">
-    <label>
-      Email <span className="required">*</span>
-    </label>
-    <input
-      required
-      type="email"
-      name="email"
-      value={form.email}
-      onChange={handleChange}
-      placeholder="exemple@email.com"
-    />
-  </div>
+              {/* Email */}
+              <div className="da-field">
+                <label>
+                  Email <span className="required">*</span>
+                </label>
+                <input
+                  required
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="exemple@email.com"
+                />
+              </div>
 
-  {/* Téléphone */}
-  <div className="da-field">
-    <label>
-      Téléphone <span className="required">*</span>
-    </label>
-    <input
-      required
-      name="telephone"
-      value={form.telephone}
-      onChange={handleChange}
-      placeholder="+216 ..."
-    />
-  </div>
+              {/* Téléphone */}
+              <div className="da-field">
+                <label>
+                  Téléphone <span className="required">*</span>
+                </label>
+                <input
+                  required
+                  name="telephone"
+                  value={form.telephone}
+                  onChange={handleChange}
+                  placeholder="+216 ..."
+                />
+              </div>
 
-  {/* Responsable */}
-  <div className="da-field">
-    <label>
-      Responsable <span className="required">*</span>
-    </label>
-    <input
-      required
-      name="responsable"
-      value={form.responsable}
-      onChange={handleChange}
-      placeholder="Nom du responsable"
-    />
-  </div>
+              {/* Responsable */}
+              <div className="da-field">
+                <label>
+                  Responsable <span className="required">*</span>
+                </label>
+                <input
+                  required
+                  name="responsable"
+                  value={form.responsable}
+                  onChange={handleChange}
+                  placeholder="Nom du responsable"
+                />
+              </div>
 
-  {/* Adresse */}
-  <div className="da-field da-wide">
-    <label>
-      Adresse <span className="required">*</span>
-    </label>
-    <textarea
-      required
-      name="adresse"
-      value={form.adresse}
-      onChange={handleChange}
-      rows={3}
-      placeholder="Adresse complète"
-    />
-  </div>
+              {/* Adresse */}
+              <div className="da-field da-wide">
+                <label>
+                  Adresse <span className="required">*</span>
+                </label>
+                <textarea
+                  required
+                  name="adresse"
+                  value={form.adresse}
+                  onChange={handleChange}
+                  rows={3}
+                  placeholder="Adresse complète"
+                />
+              </div>
 
-  {/* Catégorie */}
-  <div className="da-field da-wide">
-    <label>
-      Catégorie <span className="required">*</span>
-    </label>
-    <div className="da-category-row">
-      <select required name="categorie" value={form.categorie} onChange={handleChange}>
-        <option value="">Sélectionnez une catégorie</option>
-        {CATEGORIES.map((c) => (
-          <option key={c.value} value={c.value}>
-            {c.label}
-          </option>
-        ))}
-      </select>
+              {/* ✅ Catégorie - DYNAMIQUE depuis BDD */}
+              <div className="da-field da-wide">
+                <label>
+                  Catégorie <span className="required">*</span>
+                </label>
+                
+                {categoriesLoading ? (
+                  <div className="da-loading-mini">Chargement des catégories...</div>
+                ) : (
+                  <div className="da-category-row">
+                    <select 
+                      required 
+                      name="categorie" 
+                      value={form.categorie} 
+                      onChange={handleChange}
+                      disabled={dbCategories.length === 0}
+                    >
+                     
+                      {dbCategories.map((c) => (
+                        <option key={c.value} value={c.value}>
+                          {c.label}
+                        </option>
+                      ))}
+                    </select>
 
-      <div className="da-category-preview" aria-hidden="true">
-        {selectedCategory ? (
-          <img src={selectedCategory.img} alt="" className="da-category-img" />
-        ) : (
-          <span className="da-category-placeholder">—</span>
-        )}
-      </div>
-    </div>
-    <small className="da-help">Cette catégorie sera affichée dans la liste publique des associations.</small>
-  </div>
+                    <div className="da-category-preview" aria-hidden="true">
+                      {selectedCategory?.img ? (
+                        <img 
+                          src={selectedCategory.img.startsWith('http') 
+                            ? selectedCategory.img 
+                            : `${API}${selectedCategory.img}`} 
+                          alt="" 
+                          className="da-category-img"
+                          onError={(e) => { e.target.style.display = 'none'; }}
+                        />
+                      ) : (
+                        <span className="da-category-placeholder">
+                          {selectedCategory?.label || '—'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                <small className="da-help">Cette catégorie sera affichée dans la liste publique des associations.</small>
+              </div>
 
-  {/* Description */}
-  <div className="da-field da-wide">
-    <div className="da-label-row">
-      <label>
-        Description (public) <span className="required">*</span>
-      </label>
-      <span className="da-counter">{form.description.trim().length} caractères</span>
-    </div>
-    <textarea
-      name="description"
-      value={form.description}
-      onChange={handleChange}
-      rows={4}
-      placeholder="Décrivez votre association, vos missions, les actions principales..."
-      required
-    />
-    <small className="da-help">Cette description sera visible pour les donneurs sur la page publique.</small>
-  </div>
+              {/* Description */}
+              <div className="da-field da-wide">
+                <div className="da-label-row">
+                  <label>
+                    Description (public) <span className="required">*</span>
+                  </label>
+                  <span className="da-counter">{form.description.trim().length} caractères</span>
+                </div>
+                <textarea
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
+                  rows={4}
+                  placeholder="Décrivez votre association, vos missions, les actions principales..."
+                  required
+                />
+                <small className="da-help">Cette description sera visible pour les donneurs sur la page publique.</small>
+              </div>
 
-  {/* Logo (optionnel) */}
-  <div className="da-field da-wide">
-    <label>Logo / Photo (optionnel)</label>
-    <div className="da-logo-row">
-      <input type="file" name="logo" accept="image/*" onChange={handleFile} />
-      <div className="da-logo-preview" aria-hidden="true">
-        {form.logo ? (
-          <img src={logoPreviewUrl} alt="" className="da-logo-img" />
-        ) : (
-          <span className="da-logo-placeholder">Aucun logo</span>
-        )}
-      </div>
-    </div>
-    <small className="da-help">Formats recommandés: PNG/JPG.</small>
-  </div>
+              {/* Logo (optionnel) */}
+              <div className="da-field da-wide">
+                <label>Logo / Photo (optionnel)</label>
+                <div className="da-logo-row">
+                  <input type="file" name="logo" accept="image/*" onChange={handleFile} />
+                  <div className="da-logo-preview" aria-hidden="true">
+                    {form.logo ? (
+                      <img src={logoPreviewUrl} alt="" className="da-logo-img" />
+                    ) : (
+                      <span className="da-logo-placeholder">Aucun logo</span>
+                    )}
+                  </div>
+                </div>
+                <small className="da-help">Formats recommandés: PNG/JPG.</small>
+              </div>
 
-  {/* Documents requis */}
-  <div className="da-docs">
-    <div className="da-docs-head">
-      <h2 className="da-docs-title">Documents requis</h2>
-      <div className="da-docs-badge">
-        {missingDocsCount === 0 ? '✅ Complet' : `⏳ ${missingDocsCount} manquant(s)`}
-      </div>
-    </div>
+              {/* Documents requis */}
+              <div className="da-docs">
+                <div className="da-docs-head">
+                  <h2 className="da-docs-title">Documents requis</h2>
+                  <div className="da-docs-badge">
+                    {missingDocsCount === 0 ? '✅ Complet' : `⏳ ${missingDocsCount} manquant(s)`}
+                  </div>
+                </div>
 
-    <div className="da-doc-grid">
-      {requiredDocs.map((d) => (
-        <div key={d.key} className="da-file">
-          <label>
-            {d.label} <span className="required">*</span>
-          </label>
-          <input required type="file" name={d.key} onChange={handleFile} />
-          {form[d.key] && <div className="da-file-name">{form[d.key].name}</div>}
-        </div>
-      ))}
-    </div>
-  </div>
-</div>
+                <div className="da-doc-grid">
+                  {requiredDocs.map((d) => (
+                    <div key={d.key} className="da-file">
+                      <label>
+                        {d.label} <span className="required">*</span>
+                      </label>
+                      <input required type="file" name={d.key} onChange={handleFile} />
+                      {form[d.key] && <div className="da-file-name">{form[d.key].name}</div>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
 
             <button className="da-submit" type="submit" disabled={loading}>
               {loading ? 'Envoi...' : 'Envoyer demande'}

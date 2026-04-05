@@ -82,6 +82,7 @@ const AssociationsListPage = () => {
             id: c.id ?? c.value,
             value: String(c.value),
             label: String(c.label),
+            img: c.img || c.icon || c.image_url || null,
           }));
 
         if (normalized.length > 0) setCategories(normalized);
@@ -207,8 +208,9 @@ const AssociationsListPage = () => {
               <div className="associations-categories">
                 {categories.map((cat) => {
                   const active = selectedCategories.includes(cat.value);
-                  const img = CATEGORY_IMAGES[cat.value] || autreImg;
-
+const img = cat.img
+  ? (cat.img.startsWith('http') ? cat.img : `${API_BASE}/upload/${cat.img}`)
+  : (CATEGORY_IMAGES[cat.value] || autreImg);
                   return (
                     <button
                       key={cat.id ?? cat.value}
